@@ -1,0 +1,12 @@
+/* Common component styles */
+.category-button {
+  transition: all 0.2s ease;
+}
+
+.category-button:hover {
+  transform: translateY(-1px);
+}
+
+.category-button.active {
+  font-weight: 600;
+}
