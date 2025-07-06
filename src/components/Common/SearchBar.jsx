@@ -1,6 +1,6 @@
 import { useState, useContext, useEffect, useRef } from 'react';
 import { Search, X } from 'lucide-react';
-import { NewsContext } from '../../context/NewsContext';
+import  NewsContext  from '../../context/NewsContext';
 import { debounce } from '../../utils/helpers';
 
 /**

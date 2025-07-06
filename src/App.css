@@ -1,54 +1,51 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
-}
-
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
-}
-
-/* App container */
+App container
 .app-container {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  background: linear-gradient(
+    135deg,
+    rgb(15, 23, 42) 0%,
+    rgb(30, 41, 59) 25%,
+    rgb(51, 65, 85) 50%,
+    rgb(71, 85, 105) 75%,
+    rgb(100, 116, 139) 100%
+  );
+  background-attachment: fixed;
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Transitions */
+/* Dark theme support */
+.dark .app-container {
+  background: linear-gradient(
+    135deg,
+    rgb(2, 6, 23) 0%,
+    rgb(15, 23, 42) 25%,
+    rgb(30, 41, 59) 50%,
+    rgb(51, 65, 85) 75%,
+    rgb(71, 85, 105) 100%
+  );
+}
+
+/* Glassmorphism effects */
+.glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+}
+
+.glass-effect-strong {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth transitions */
 .transition-colors {
   transition-property: background-color, border-color, color, fill, stroke;
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
@@ -73,6 +70,134 @@
   transition-duration: 300ms;
 }
 
+/* Hover effects */
+.hover-lift {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+}
+
+.hover-scale {
+  transition: transform 0.2s ease-in-out;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+.hover-glow {
+  transition: all 0.3s ease-in-out;
+}
+
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(59, 130, 246, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
+}
+
+.slide-up {
+  animation: slideUp 0.5s ease-out;
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer 2s ease-in-out infinite;
+}
+
+/* Staggered animations for grid items */
+.news-grid article {
+  opacity: 0;
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.news-grid article:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.news-grid article:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.news-grid article:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.news-grid article:nth-child(4) {
+  animation-delay: 0.4s;
+}
+.news-grid article:nth-child(5) {
+  animation-delay: 0.5s;
+}
+.news-grid article:nth-child(6) {
+  animation-delay: 0.6s;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
 /* Prose styles for article content */
 .prose {
   max-width: 65ch;
@@ -82,44 +207,118 @@
 .prose p {
   margin-top: 1.25em;
   margin-bottom: 1.25em;
+  line-height: 1.7;
 }
 
 .dark .prose {
   color: inherit;
 }
 
-/* Additional UI Enhancements
-
-1. Add subtle animations to your components using CSS transitions and transforms:
-```css
-/* Add these animation classes to your existing CSS */
-.fade-in {
-  animation: fadeIn 0.5s ease-in-out;
+/* Button enhancements */
+.btn-primary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-.slide-up {
-  animation: slideUp 0.5s ease-out;
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.2),
+    transparent
+  );
+  transition: left 0.5s;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+.btn-primary:hover::before {
+  left: 100%;
 }
 
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
 }
 
-/* Staggered animation for grid items */
-.news-grid article {
-  opacity: 0;
-  animation: fadeIn 0.5s ease-in-out forwards;
+.btn-secondary {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
 }
 
-.news-grid article:nth-child(1) { animation-delay: 0.1s; }
-.news-grid article:nth-child(2) { animation-delay: 0.2s; }
-.news-grid article:nth-child(3) { animation-delay: 0.3s; }
-.news-grid article:nth-child(4) { animation-delay: 0.4s; }
-.news-grid article:nth-child(5) { animation-delay: 0.5s; }
-.news-grid article:nth-child(6) { animation-delay: 0.6s; }
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+/* Loading skeleton */
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.1) 25%,
+    rgba(255, 255, 255, 0.2) 50%,
+    rgba(255, 255, 255, 0.1) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
+  border-radius: 12px;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .app-container {
+    padding: 0;
+  }
+
+  .glass-effect,
+  .glass-effect-strong {
+    border-radius: 0;
+    border-left: none;
+    border-right: none;
+  }
+}
+
+/* Focus states for accessibility */
+.focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .glass-effect,
+  .glass-effect-strong {
+    background: rgba(0, 0, 0, 0.8);
+    border: 2px solid white;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

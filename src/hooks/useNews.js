@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
-import { NewsContext } from '../context/NewsContext';
-import { fetchNews } from '../services/newsApi';
+// hooks/useNews.js
+import { useEffect, useState } from "react";
+import { useNews as useNewsContext } from "../context/NewsContext"; // Import the context hook
+import { fetchNews } from "../services/newsApi";
 
 /**
  * Hook for fetching and managing news data
@@ -11,9 +12,9 @@ export const useNews = () => {
     searchQuery, 
     category, 
     sortBy, 
-    currentPage 
-  } = useContext(NewsContext);
-  
+    currentPage
+  } = useNewsContext(); // Use the context hook to get filter states
+
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -23,19 +24,19 @@ export const useNews = () => {
     const getNews = async () => {
       setLoading(true);
       setError(null);
-      
+
       try {
         const response = await fetchNews({
           q: searchQuery,
-          category: category !== 'general' ? category : '',
+          category: category !== "general" ? category : "",
           sortBy,
-          page: currentPage
+          page: currentPage,
         });
-        
+
         setArticles(response.articles || []);
         setTotalResults(response.totalResults || 0);
       } catch (err) {
-        setError(err.message || 'Failed to fetch news');
+        setError(err.message || "Failed to fetch news");
         setArticles([]);
       } finally {
         setLoading(false);
@@ -50,6 +51,6 @@ export const useNews = () => {
     loading,
     error,
     totalResults,
-    hasMore: articles.length < totalResults
+    hasMore: articles.length < totalResults,
   };
 };

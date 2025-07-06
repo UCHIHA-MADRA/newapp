@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { NewsContext } from '../../context/NewsContext';
+import  NewsContext  from '../../context/NewsContext';
 import { NEWS_CATEGORIES } from '../../utils/constants';
 
 /**

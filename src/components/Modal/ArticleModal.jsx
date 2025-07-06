@@ -1,6 +1,5 @@
-import { useContext } from 'react';
 import { X, Bookmark, Share2, ExternalLink } from 'lucide-react';
-import { NewsContext } from '../../context/NewsContext';
+import { useNews } from '../../context/NewsContext';
 import { useBookmarks } from '../../hooks/useBookmarks';
 import { formatDate, formatAuthor } from '../../utils/formatters';
 import { shareArticle, getDomain } from '../../utils/helpers';
@@ -13,7 +12,7 @@ import './Modal.css';
  * @returns {JSX.Element} Article modal component
  */
 const ArticleModal = ({ showToast }) => {
-  const { selectedArticle, setSelectedArticle } = useContext(NewsContext);
+  const { selectedArticle, setSelectedArticle } = useNews();
   const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
 
   if (!selectedArticle) return null;

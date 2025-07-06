@@ -1,7 +1,6 @@
-import { useContext } from 'react';
 import { Bookmark, Share2, ExternalLink } from 'lucide-react';
 import { useBookmarks } from '../../hooks/useBookmarks';
-import { NewsContext } from '../../context/NewsContext';
+import { useNews } from '../../context/NewsContext'; // ✅ This was correct in your original!
 import { formatRelativeTime, formatTitle, formatDescription } from '../../utils/formatters';
 import { shareArticle, getDomain } from '../../utils/helpers';
 import './NewsGrid.css';
@@ -15,7 +14,7 @@ import './NewsGrid.css';
  */
 const NewsCard = ({ article, showToast }) => {
   const { addBookmark, removeBookmark, isBookmarked } = useBookmarks();
-  const { setSelectedArticle } = useContext(NewsContext);
+  const { setSelectedArticle } = useNews(); // ✅ Use the context hook
   const bookmarked = isBookmarked(article.url);
 
   /**
@@ -66,9 +65,9 @@ const NewsCard = ({ article, showToast }) => {
   };
 
   return (
-    <div 
+    <article 
       onClick={openArticle}
-      className="bg-white dark:bg-dark-100 rounded-lg overflow-hidden shadow-sm hover:shadow-md transition-all cursor-pointer card-hover"
+      className="news-card glass-card hover-lift rounded-lg overflow-hidden shadow-lg transition-all duration-300 cursor-pointer bg-white dark:bg-dark-100"
     >
       {/* Image */}
       <div className="relative h-48 overflow-hidden bg-gray-200 dark:bg-dark-200">
@@ -76,7 +75,7 @@ const NewsCard = ({ article, showToast }) => {
           <img 
             src={article.urlToImage} 
             alt={article.title} 
-            className="w-full h-full object-cover transition-transform hover:scale-105"
+            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
             loading="lazy"
             onError={(e) => {
               e.target.onerror = null;
@@ -85,13 +84,13 @@ const NewsCard = ({ article, showToast }) => {
           />
         ) : (
           <div className="w-full h-full flex items-center justify-center bg-gray-200 dark:bg-dark-200">
-            <span className="text-gray-400 dark:text-gray-600">No Image</span>
+            <span className="text-gray-400 dark:text-gray-600 text-sm">No Image</span>
           </div>
         )}
         
         {/* Source badge */}
         <div className="absolute top-3 left-3">
-          <span className="px-2 py-1 text-xs rounded-full bg-black/50 text-white backdrop-blur-sm">
+          <span className="px-2 py-1 text-xs rounded-full bg-black/50 text-white backdrop-blur-sm font-medium">
             {getDomain(article.url)}
           </span>
         </div>
@@ -100,7 +99,7 @@ const NewsCard = ({ article, showToast }) => {
         <div className="absolute top-3 right-3 flex space-x-2">
           <button 
             onClick={toggleBookmark}
-            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
+            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors duration-200"
             aria-label={bookmarked ? 'Remove from bookmarks' : 'Add to bookmarks'}
           >
             <Bookmark size={16} className={bookmarked ? 'fill-white' : ''} />
@@ -108,7 +107,7 @@ const NewsCard = ({ article, showToast }) => {
           
           <button 
             onClick={handleShare}
-            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
+            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors duration-200"
             aria-label="Share article"
           >
             <Share2 size={16} />
@@ -116,7 +115,7 @@ const NewsCard = ({ article, showToast }) => {
           
           <button 
             onClick={openInNewTab}
-            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors"
+            className="p-1.5 rounded-full bg-black/50 text-white backdrop-blur-sm hover:bg-black/70 transition-colors duration-200"
             aria-label="Open in new tab"
           >
             <ExternalLink size={16} />
@@ -139,13 +138,8 @@ const NewsCard = ({ article, showToast }) => {
           <span>{formatRelativeTime(article.publishedAt)}</span>
         </div>
       </div>
-    </div>
+    </article>
   );
 };
 
 export default NewsCard;
-
-// Add the glass-card and hover-lift classes to your card component
-<article className="news-card glass-card hover-lift rounded-lg overflow-hidden shadow-lg transition-all duration-300">
-  {/* Your existing card content */}
-</article>

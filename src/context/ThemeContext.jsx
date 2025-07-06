@@ -1,5 +1,10 @@
-import { createContext, useEffect, useState } from 'react';
-import { STORAGE_KEYS, THEMES } from '../utils/constants';
+import { createContext, useEffect, useState } from "react";
+
+// Define constants inline
+const THEMES = {
+  LIGHT: "light",
+  DARK: "dark",
+};
 
 /**
  * Context for managing application theme
@@ -14,14 +19,14 @@ export const ThemeContext = createContext();
  */
 export const ThemeProvider = ({ children }) => {
   const [theme, setTheme] = useState(() => {
-    // Get saved theme from localStorage or use system preference
-    const savedTheme = localStorage.getItem(STORAGE_KEYS.THEME);
-    if (savedTheme) return savedTheme;
-    
-    // Check system preference
-    return window.matchMedia('(prefers-color-scheme: dark)').matches
-      ? THEMES.DARK
-      : THEMES.LIGHT;
+    // Check system preference (fallback to light if matchMedia not available)
+    try {
+      return window.matchMedia("(prefers-color-scheme: dark)").matches
+        ? THEMES.DARK
+        : THEMES.LIGHT;
+    } catch (error) {
+      return THEMES.LIGHT;
+    }
   });
 
   // Update DOM when theme changes
@@ -29,14 +34,13 @@ export const ThemeProvider = ({ children }) => {
     const root = window.document.documentElement;
     root.classList.remove(THEMES.LIGHT, THEMES.DARK);
     root.classList.add(theme);
-    localStorage.setItem(STORAGE_KEYS.THEME, theme);
   }, [theme]);
 
   /**
    * Toggle between light and dark themes
    */
   const toggleTheme = () => {
-    setTheme(prevTheme => 
+    setTheme((prevTheme) =>
       prevTheme === THEMES.LIGHT ? THEMES.DARK : THEMES.LIGHT
     );
   };

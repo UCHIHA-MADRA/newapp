@@ -1,48 +1,56 @@
-import { createContext, useState } from 'react';
-import { NEWS_CATEGORIES } from '../utils/constants';
+import { createContext, useContext, useState } from "react";
+import { NEWS_CATEGORIES } from "../utils/constants";
 
-/**
- * Context for managing news state
- */
-export const NewsContext = createContext();
+const NewsContext = createContext();
 
-/**
- * Provider component for news state management
- * @param {Object} props - Component props
- * @param {React.ReactNode} props.children - Child components
- * @returns {JSX.Element} News provider component
- */
+export const useNews = () => {
+  const context = useContext(NewsContext);
+  if (!context) {
+    throw new Error("useNews must be used within a NewsProvider");
+  }
+  return context;
+};
+
 export const NewsProvider = ({ children }) => {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState(NEWS_CATEGORIES[0].id);
-  const [sortBy, setSortBy] = useState('publishedAt');
+  const [sortBy, setSortBy] = useState("publishedAt");
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedArticle, setSelectedArticle] = useState(null);
+  const [articles, setArticles] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-  /**
-   * Reset all filters to default values
-   */
   const resetFilters = () => {
-    setSearchQuery('');
+    setSearchQuery("");
     setCategory(NEWS_CATEGORIES[0].id);
-    setSortBy('publishedAt');
+    setSortBy("publishedAt");
     setCurrentPage(1);
+    setSelectedArticle(null);
+  };
+
+  const contextValue = {
+    searchQuery,
+    setSearchQuery,
+    category,
+    setCategory,
+    sortBy,
+    setSortBy,
+    currentPage,
+    setCurrentPage,
+    selectedArticle,
+    setSelectedArticle,
+    articles,
+    setArticles,
+    loading,
+    setLoading,
+    error,
+    setError,
+    resetFilters,
   };
 
   return (
-    <NewsContext.Provider value={{
-      searchQuery,
-      setSearchQuery,
-      category,
-      setCategory,
-      sortBy,
-      setSortBy,
-      currentPage,
-      setCurrentPage,
-      selectedArticle,
-      setSelectedArticle,
-      resetFilters
-    }}>
+    <NewsContext.Provider value={contextValue}>
       {children}
     </NewsContext.Provider>
   );
