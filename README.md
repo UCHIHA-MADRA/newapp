@@ -211,11 +211,11 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Future Enhancements
 
-- [ ] **Offline reading** with service worker
-- [ ] **Push notifications** for breaking news
-- [ ] **User authentication** and personalized feeds
-- [ ] **Article summarization** with AI
-- [ ] **Social sharing** integration
-- [ ] **Analytics dashboard** for reading habits
+- [*] **Offline reading** with service worker
+- [*] **Push notifications** for breaking news
+- [*] **User authentication** and personalized feeds
+- [*] **Article summarization** with AI
+- [*] **Social sharing** integration
+- [*] **Analytics dashboard** for reading habits
 - [ ] **Multi-language support**
 - [ ] **Voice search** functionality
