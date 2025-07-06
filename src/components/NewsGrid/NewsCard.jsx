@@ -123,8 +123,8 @@ const NewsCard = ({ article, showToast }) => {
         </div>
       </div>
       
-      {/* Content */}
-      <div className="p-4">
+      {/* Content - Centered */}
+      <div className="p-4 text-center">
         <h3 className="text-lg font-semibold mb-2 line-clamp-2 text-gray-900 dark:text-gray-100">
           {formatTitle(article.title)}
         </h3>
@@ -133,8 +133,9 @@ const NewsCard = ({ article, showToast }) => {
           {formatDescription(article.description)}
         </p>
         
-        <div className="flex justify-between items-center text-xs text-gray-500 dark:text-gray-500">
+        <div className="flex justify-center items-center space-x-4 text-xs text-gray-500 dark:text-gray-500">
           <span>{article.author ? `By ${article.author}` : 'Unknown author'}</span>
+          <span className="w-1 h-1 bg-gray-400 rounded-full"></span>
           <span>{formatRelativeTime(article.publishedAt)}</span>
         </div>
       </div>

@@ -20,6 +20,46 @@ const ArticleModal = ({ showToast }) => {
   const bookmarked = isBookmarked(selectedArticle.url);
 
   /**
+   * Clean and format article content
+   * @param {string} content - Raw content string
+   * @returns {string} Cleaned content
+   */
+  const cleanContent = (content) => {
+    if (!content) return '';
+    
+    // Remove the [+X chars] suffix that NewsAPI adds
+    let cleaned = content.replace(/\[\+\d+ chars\]$/, '');
+    
+    // Remove HTML tags and decode entities
+    cleaned = cleaned.replace(/<[^>]*>/g, '');
+    cleaned = cleaned.replace(/&lt;/g, '<');
+    cleaned = cleaned.replace(/&gt;/g, '>');
+    cleaned = cleaned.replace(/&amp;/g, '&');
+    cleaned = cleaned.replace(/&quot;/g, '"');
+    cleaned = cleaned.replace(/&#39;/g, "'");
+    
+    return cleaned;
+  };
+
+  /**
+   * Format content with proper line breaks
+   * @param {string} content - Content to format
+   * @returns {JSX.Element} Formatted content
+   */
+  const formatContent = (content) => {
+    if (!content) return null;
+    
+    const cleaned = cleanContent(content);
+    const paragraphs = cleaned.split('\n').filter(p => p.trim().length > 0);
+    
+    return paragraphs.map((paragraph, index) => (
+      <p key={index} className="text-gray-700 dark:text-gray-300 mb-4 leading-relaxed text-center">
+        {paragraph.trim()}
+      </p>
+    ));
+  };
+
+  /**
    * Close the modal
    */
   const closeModal = () => {
@@ -73,7 +113,7 @@ const ArticleModal = ({ showToast }) => {
           {/* Close button */}
           <button 
             onClick={closeModal}
-            className="absolute top-4 right-4 p-2 rounded-full bg-gray-200/80 dark:bg-dark-200/80 backdrop-blur-sm z-10"
+            className="absolute top-4 right-4 p-2 rounded-full bg-gray-200/80 dark:bg-dark-200/80 backdrop-blur-sm z-10 hover:bg-gray-300/80 dark:hover:bg-dark-300/80 transition-colors"
             aria-label="Close modal"
           >
             <X size={20} />
@@ -86,6 +126,10 @@ const ArticleModal = ({ showToast }) => {
                 src={selectedArticle.urlToImage} 
                 alt={selectedArticle.title} 
                 className="w-full h-full object-cover"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = 'https://via.placeholder.com/800x400?text=No+Image';
+                }}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center">
@@ -129,12 +173,12 @@ const ArticleModal = ({ showToast }) => {
           </div>
 
           {/* Content */}
-          <div className="p-6 overflow-y-auto max-h-[calc(90vh-20rem)]">
+          <div className="p-6 overflow-y-auto max-h-[calc(90vh-20rem)] text-center">
             <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-100">
               {selectedArticle.title}
             </h2>
 
-            <div className="flex flex-wrap items-center text-sm text-gray-500 dark:text-gray-400 mb-6 gap-y-2">
+            <div className="flex flex-wrap items-center justify-center text-sm text-gray-500 dark:text-gray-400 mb-6 gap-y-2">
               {selectedArticle.author && (
                 <span className="mr-4">By {formatAuthor(selectedArticle.author)}</span>
               )}
@@ -146,23 +190,27 @@ const ArticleModal = ({ showToast }) => {
               )}
             </div>
 
-            <div className="prose dark:prose-invert max-w-none">
-              <p className="text-gray-700 dark:text-gray-300 mb-6 text-lg leading-relaxed">
-                {selectedArticle.description}
-              </p>
+            <div className="max-w-none">
+              {selectedArticle.description && (
+                <div className="mb-6 text-center">
+                  <p className="text-gray-700 dark:text-gray-300 text-lg leading-relaxed font-medium">
+                    {cleanContent(selectedArticle.description)}
+                  </p>
+                </div>
+              )}
               
               {selectedArticle.content && (
-                <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
-                  {selectedArticle.content.replace(/\[\+\d+ chars\]$/, '')}
-                </p>
+                <div className="mb-6 text-center">
+                  {formatContent(selectedArticle.content)}
+                </div>
               )}
 
-              <div className="mt-8 pt-6 border-t dark:border-gray-800">
+              <div className="mt-8 pt-6 border-t dark:border-gray-800 text-center">
                 <a 
                   href={selectedArticle.url} 
                   target="_blank" 
                   rel="noopener noreferrer"
-                  className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-md hover:bg-primary-600 transition-colors"
+                  className="inline-flex items-center px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors"
                 >
                   Read Full Article
                   <ExternalLink size={16} className="ml-2" />

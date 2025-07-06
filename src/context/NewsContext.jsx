@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { NEWS_CATEGORIES } from "../utils/constants";
 
 const NewsContext = createContext();
@@ -20,6 +20,13 @@ export const NewsProvider = ({ children }) => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [country, setCountry] = useState("us"); // Added country state
+
+  // Reset page and articles when search parameters change
+  useEffect(() => {
+    setCurrentPage(1);
+    setArticles([]); // Clear articles when search params change
+  }, [searchQuery, category, sortBy, country]); // Added country dependency
 
   const resetFilters = () => {
     setSearchQuery("");
@@ -27,6 +34,8 @@ export const NewsProvider = ({ children }) => {
     setSortBy("publishedAt");
     setCurrentPage(1);
     setSelectedArticle(null);
+    setArticles([]);
+    setCountry("us"); // Reset country too
   };
 
   const contextValue = {
@@ -46,6 +55,8 @@ export const NewsProvider = ({ children }) => {
     setLoading,
     error,
     setError,
+    country, // Added country to context
+    setCountry, // Added setCountry to context
     resetFilters,
   };
 

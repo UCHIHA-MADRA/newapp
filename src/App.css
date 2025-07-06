@@ -1,8 +1,10 @@
+/* App.css */
+
 /* ROOT & LOGO STYLES */
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  max-width: 100%; /* Change from 1280px to 100% */
+  margin: 0;
+  padding: 0; /* Remove padding */
   text-align: center;
 }
 
@@ -48,19 +50,26 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    rgb(15, 23, 42) 0%,
-    rgb(30, 41, 59) 25%,
-    rgb(51, 65, 85) 50%,
-    rgb(71, 85, 105) 75%,
-    rgb(100, 116, 139) 100%
-  );
-  background-attachment: fixed;
+  width: 100%;
   position: relative;
   overflow-x: hidden;
+  transition: background 0.3s ease;
 }
 
+/* Light theme background */
+.light .app-container {
+  background: linear-gradient(
+    135deg,
+    rgb(248, 250, 252) 0%,
+    rgb(241, 245, 249) 25%,
+    rgb(226, 232, 240) 50%,
+    rgb(203, 213, 225) 75%,
+    rgb(148, 163, 184) 100%
+  );
+  background-attachment: fixed;
+}
+
+/* Dark theme background */
 .dark .app-container {
   background: linear-gradient(
     135deg,
@@ -70,23 +79,42 @@
     rgb(51, 65, 85) 75%,
     rgb(71, 85, 105) 100%
   );
+  background-attachment: fixed;
 }
 
-/* GLASS EFFECTS */
+/* GLASS EFFECTS - Update for theme responsiveness */
 .glass-effect {
-  background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 16px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.light .glass-effect {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass-effect {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .glass-effect-strong {
-  background: rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 20px;
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.15);
+  transition: background 0.3s ease, border 0.3s ease;
+}
+
+.light .glass-effect-strong {
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.dark .glass-effect-strong {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
 /* TRANSITIONS */

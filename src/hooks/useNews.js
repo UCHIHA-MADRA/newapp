@@ -1,6 +1,5 @@
-// hooks/useNews.js
 import { useEffect, useState } from "react";
-import { useNews as useNewsContext } from "../context/NewsContext"; // Import the context hook
+import { useNews as useNewsContext } from "../context/NewsContext";
 import { fetchNews } from "../services/newsApi";
 
 /**
@@ -12,12 +11,16 @@ export const useNews = () => {
     searchQuery, 
     category, 
     sortBy, 
-    currentPage
-  } = useNewsContext(); // Use the context hook to get filter states
+    currentPage,
+    country, // Added country from context
+    articles,
+    setArticles,
+    loading,
+    setLoading,
+    error,
+    setError
+  } = useNewsContext();
 
-  const [articles, setArticles] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
   const [totalResults, setTotalResults] = useState(0);
 
   useEffect(() => {
@@ -31,20 +34,41 @@ export const useNews = () => {
           category: category !== "general" ? category : "",
           sortBy,
           page: currentPage,
+          country, // Pass country to API
         });
 
-        setArticles(response.articles || []);
+        // KEY FIX: Check if this is the first page or a new search
+        if (currentPage === 1) {
+          // First page or new search - replace articles
+          setArticles(response.articles || []);
+        } else {
+          // Subsequent pages - append to existing articles
+          setArticles(prevArticles => [
+            ...prevArticles,
+            ...(response.articles || [])
+          ]);
+        }
+        
         setTotalResults(response.totalResults || 0);
       } catch (err) {
         setError(err.message || "Failed to fetch news");
-        setArticles([]);
+        // Only clear articles on error if it's the first page
+        if (currentPage === 1) {
+          setArticles([]);
+        }
       } finally {
         setLoading(false);
       }
     };
 
     getNews();
-  }, [searchQuery, category, sortBy, currentPage]);
+  }, [searchQuery, category, sortBy, currentPage, country]); // Added country dependency
+
+  // Reset to page 1 when search parameters change
+  useEffect(() => {
+    // This effect will trigger when search params change
+    // The context should handle resetting currentPage to 1
+  }, [searchQuery, category, sortBy, country]); // Added country dependency
 
   return {
     articles,
